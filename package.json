@@ -1,0 +1,33 @@
+{
+  "name": "terrain-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "terrain": "./build/cli.js"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "build-linux-binary": "pkg . --targets node14-linux-x64 --output terrain",
+    "test": "npm run build && ./build/cli.js contour --threads 16 --debug ./output ../data/unzipped/karibik-dem3/*.hgt"
+  },
+  "pkg": {
+    "scripts": "build/**/*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "@types/yargs": "^17.0.10",
+    "pkg": "^5.6.0",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/watch": "^1.0.3",
+    "fs-extra": "^9.1.0",
+    "fs-promise": "^2.0.3",
+    "yargs": "^17.4.1"
+  }
+}
