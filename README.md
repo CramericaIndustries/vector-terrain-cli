@@ -4,6 +4,8 @@ Generates contour mbtile files from DEM files. For both, metric and imperial.
 The mbtile file then can be used with [maplibre-gl-js](https://maplibre.org/) and [mapbox-gl](https://github.com/mapbox/mapbox-gl-js) to render the elevation contour lines in a vector map.
 
 Based on the work of nst-guide https://github.com/nst-guide/terrain
+Converts each DEM file to a mbtile file and then merges all mbtile files into a single file. This allows parallel processing of the DEM files, which speeds up everything and doesn't need much memory, compared to first stitching together the DEM files to a huge vrt and then processing this file in one go.
+Downside is that at the border of the DEM files the contour lines are overlapping.
 
 ## Prerequisites
 1) [node-js v12.22.5 or newer](https://gdal.org/download.html)
