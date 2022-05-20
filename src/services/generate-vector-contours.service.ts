@@ -1,3 +1,4 @@
+import { gdalTranslateService } from './gdal/gdal-translate.service';
 import { tippecanoeService } from './gdal/tippecanoe.service';
 import { gdalContourService } from './gdal/gdal-contour.service';
 import { gdalWarpService } from './gdal/gdal-warp.service';
@@ -28,7 +29,8 @@ interface IGdalInfo {
 
 interface IDemFileProcessResult {
     demFileName:    string;
-    outputFileName: string;
+    metricOutputFileName: string;
+    imperialOutputFileName: string;
     error:          boolean;
     skipped:        boolean;
     empty:          boolean;
@@ -49,8 +51,9 @@ class GenerateVectorContourLinesService {
 
         if(demFile) {
             result = {
-                 demFileName:       demFile
-                ,outputFileName:    null
+                 demFileName:               demFile
+                ,metricOutputFileName:      null
+                ,imperialOutputFileName:    null
                 ,startTime: Date.now()
                 ,endTime:   NaN
                 ,duration:  NaN
@@ -88,7 +91,7 @@ class GenerateVectorContourLinesService {
                         loggerService.wirteLine()
                     }
 
-                    const startTime = Date.now();
+                    const sourceDemFileName = fileSystemService.extractFileName(demFile);
 
                     // 1) build vrt file
                     const vrtFileName = await gdalBuildVrtService.buildVrtFile(demFile, gdalInfo);  // also crops the tile
@@ -102,28 +105,41 @@ class GenerateVectorContourLinesService {
                     const warpFileName = await gdalWarpService.convertToESPG4326(trimmedVrtFileName,gdalInfo);
 
                     // 3.1) gdal_contour metric     # Generate 10m contours
-                    const geojsonFileName = await gdalContourService.generateContourLinesMetric10M(warpFileName);
+                    const metricGeojsonFileName = await gdalContourService.generateContourLinesMetric10M(warpFileName);
 
                     // 3.2) gdal_contour imperial   # Generate 40ft contours, note => vrt file must be converted to imperial units first
+                    const imperialVrtFile = await gdalTranslateService.convertVrtWgs84ToImperialUnits(warpFileName);
+                    const imperialGeoJsonFileName = await gdalContourService.generateContourLinesImperial40Ft(imperialVrtFile);
 
                     // 4) tippecanoe                # generate mbtiles file
-                    const sourceDemFileName = fileSystemService.extractFileName(demFile);
-                    const metricMbtilesFileName = await tippecanoeService.toMbtiles(geojsonFileName,`${sourceDemFileName}_metric.mbtiles`,false);
 
+                    // 4.1) tippecanoe metric
+                    const metricMbtilesFileName = await tippecanoeService.toMbtiles(metricGeojsonFileName,`${sourceDemFileName}_metric.mbtiles`,false);
                     if(metricMbtilesFileName) {
-                        result.outputFileName = `${stateService.getOutputPath()}/${metricMbtilesFileName}`;
-                    } else {
+                        result.metricOutputFileName = `${stateService.getOutputPath()}/${metricMbtilesFileName}`;
+                    }
+
+                    // 4.2) tippecanoe imperial
+                    const imperialMbtilesFileName = await tippecanoeService.toMbtiles(imperialGeoJsonFileName,`${sourceDemFileName}_imperial.mbtiles`,true);
+                    if(imperialMbtilesFileName) {
+                        result.imperialOutputFileName = `${stateService.getOutputPath()}/${imperialMbtilesFileName}`;
+                    }
+                    
+                    if(result.empty) {
                         result.empty = true;
                         loggerService.wirteLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
                         loggerService.wirteLine(`No contours (flat area) in ${demFile}`);
                         loggerService.wirteLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
                     }
 
+
                     await Promise.all([
                          fileSystemService.removeFileOrDirectory(vrtFileName)
                         ,fileSystemService.removeFileOrDirectory(trimmedVrtFileName)
                         ,fileSystemService.removeFileOrDirectory(warpFileName)
-                        ,fileSystemService.removeFileOrDirectory(geojsonFileName)
+                        ,fileSystemService.removeFileOrDirectory(metricGeojsonFileName)
+                        ,fileSystemService.removeFileOrDirectory(imperialGeoJsonFileName)
+                        ,fileSystemService.removeFileOrDirectory(imperialVrtFile)
                     ]);
 
                     result.endTime = Date.now();
@@ -168,7 +184,7 @@ class GenerateVectorContourLinesService {
                         this.processDemFile(demFile).then(demProcessingResult => {
                             saveState = stateService.sucessfullyProcessedFile(
                                                              demProcessingResult.demFileName
-                                                            ,demProcessingResult.outputFileName
+                                                            ,demProcessingResult.metricOutputFileName
                                                             ,startTime
                                                             ,demProcessingResult.empty
                                                     );
@@ -182,7 +198,7 @@ class GenerateVectorContourLinesService {
                                 emptyCount++;
                             }
                             
-                            if(demProcessingResult.outputFileName) {
+                            if(demProcessingResult.metricOutputFileName) {
                                 outputFileCount++;
                             }
 
@@ -223,6 +239,7 @@ class GenerateVectorContourLinesService {
 
             if(outputFileCount) {
                 await mbtileJoinService.joinTiles(stateService.getOutputPath() + "/*_metric.mbtiles","merged_metric.mbtiles",true);
+                await mbtileJoinService.joinTiles(stateService.getOutputPath() + "/*_imperial.mbtiles","merged_imperial.mbtiles",true);
             }
             await tippecanoeService.cleanUp();
             const totalDuration = Date.now() - startTime;
@@ -255,6 +272,7 @@ class GenerateVectorContourLinesService {
                ,gdalContourService.checkInstalled()
                ,gdalBuildVrtService.checkInstalled()
                ,gdalWarpService.checkInstalled()
+               ,gdalTranslateService.checkInstalled()
            ]);
    
            result = true;

@@ -126,7 +126,6 @@ class StateService {
             const fileState = this.state.files[sourceFilePath];
             result = fileState?.completed && (fileState.empty || await fileSystemService.checkPathExists(fileState.outputFile));
         }
-        
         return result;
     }
 }
