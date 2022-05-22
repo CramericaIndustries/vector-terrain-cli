@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npx tsc",
     "build-linux-binary": "pkg . --targets node14-linux-x64 --output terrain",
-    "test": "npm run build && ./build/cli.js contour --threads 16 --debug ./output ../data/unzipped/karibik-dem3/*.hgt"
+    "test": "npm run build && ./build/cli.js contour --threads 16 ./output /mnt/host-gis-data/viewfinderpanoramas-dem3-3arc-seconds/*.hgt"
   },
   "pkg": {
     "scripts": "build/**/*.js"

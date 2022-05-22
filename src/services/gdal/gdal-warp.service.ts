@@ -92,7 +92,7 @@ class GdalWarpService {
             const sourceEpsgId = gdalInfoService.getEPSGID(gdalInfo);
 
             // remove output file if exists
-            fileSystemService.removeFileOrDirectory(outputFile);
+            await fileSystemService.removeFileOrDirectory(outputFile);
 
             const exeRes = await commandLineExecutionService.exec(
                 `gdalwarp   -q                          \

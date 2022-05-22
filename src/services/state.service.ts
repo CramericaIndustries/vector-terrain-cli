@@ -15,6 +15,7 @@ interface FileState {
 };
 
 class StateService {
+    protected mergeTilesAfterProcessingFinished: boolean = false;
     protected debug: boolean = false;
     protected stateFilePath: string = null;
     protected path: string = null;  // output path from command line argument
@@ -36,6 +37,10 @@ class StateService {
 
     public getStateFilePath(): string {
         return this.stateFilePath;
+    }
+
+    public setMergeTilesAfterProcessingFinished(value: boolean) {
+        this.mergeTilesAfterProcessingFinished = value;
     }
 
     /**
@@ -100,6 +105,10 @@ class StateService {
 
     public isDebug(): boolean {
         return this.debug;
+    }
+
+    public isMergeTilesAfterProcessingFinished(): boolean {
+        return this.mergeTilesAfterProcessingFinished;
     }
 
     public async sucessfullyProcessedFile(sourceFilePath: string, outputFilePath: string, startTime: number, empty: boolean = false) {

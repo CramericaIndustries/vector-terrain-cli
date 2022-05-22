@@ -98,11 +98,12 @@ class GenerateVectorContourLinesService {
 
                     // 2) gdalwarp                  
                     // DEM files often have a 1px border => get rid of that by cropping/trimming the VRT file
-                    const trimmedVrtFileName = await gdalWarpService.trimVrtFile(vrtFileName,gdalInfo);
-                    gdalInfo = await gdalInfoService.getGdalInfo(trimmedVrtFileName);   // refresh gdal info
+                    // const trimmedVrtFileName = await gdalWarpService.trimVrtFile(vrtFileName,gdalInfo);
+                    // gdalInfo = await gdalInfoService.getGdalInfo(trimmedVrtFileName);   // refresh gdal info
                                         
                     // # Reproject to EPSG 4326 and also convert data type from float32 to int16
-                    const warpFileName = await gdalWarpService.convertToESPG4326(trimmedVrtFileName,gdalInfo);
+                    // const warpFileName = await gdalWarpService.convertToESPG4326(trimmedVrtFileName,gdalInfo);
+                    const warpFileName = await gdalWarpService.convertToESPG4326(vrtFileName,gdalInfo);
 
                     // 3.1) gdal_contour metric     # Generate 10m contours
                     const metricGeojsonFileName = await gdalContourService.generateContourLinesMetric10M(warpFileName);
@@ -135,7 +136,7 @@ class GenerateVectorContourLinesService {
 
                     await Promise.all([
                          fileSystemService.removeFileOrDirectory(vrtFileName)
-                        ,fileSystemService.removeFileOrDirectory(trimmedVrtFileName)
+                        // ,fileSystemService.removeFileOrDirectory(trimmedVrtFileName)
                         ,fileSystemService.removeFileOrDirectory(warpFileName)
                         ,fileSystemService.removeFileOrDirectory(metricGeojsonFileName)
                         ,fileSystemService.removeFileOrDirectory(imperialGeoJsonFileName)
@@ -172,7 +173,7 @@ class GenerateVectorContourLinesService {
             let skipCount:  number = 0;
             let emptyCount: number = 0;
             let outputFileCount: number = 0;
-            let startTime: number = Date.now();
+            let startTime: number = Date.now(); // overall start time
 
             await new Promise<void>((resolve,reject) => {
                 let activeThreads = 0;
@@ -182,12 +183,14 @@ class GenerateVectorContourLinesService {
                     const demFile = jobs.pop(); // get next job
                     if(demFile) {
                         this.processDemFile(demFile).then(demProcessingResult => {
-                            saveState = stateService.sucessfullyProcessedFile(
-                                                             demProcessingResult.demFileName
-                                                            ,demProcessingResult.metricOutputFileName
-                                                            ,startTime
-                                                            ,demProcessingResult.empty
-                                                    );
+                            if(!demProcessingResult.skipped) {
+                                saveState = stateService.sucessfullyProcessedFile(
+                                                                demProcessingResult.demFileName
+                                                                ,demProcessingResult.metricOutputFileName
+                                                                ,Date.now()
+                                                                ,demProcessingResult.empty
+                                                        );
+                            }
                             count++;
 
                             if(demProcessingResult.skipped) {
@@ -201,6 +204,8 @@ class GenerateVectorContourLinesService {
                             if(demProcessingResult.metricOutputFileName) {
                                 outputFileCount++;
                             }
+
+                            loggerService.wirteLine(`${new Date().toISOString()}: Finished processing '${fileSystemService.extractFileName(demFile)}'. Progress ${count} of ${demFiles?.length} files. Skipped ${skipCount} files. ${emptyCount} files were empty.`);
 
                             processNextDemFile();
                         }).catch(e => {
@@ -237,7 +242,7 @@ class GenerateVectorContourLinesService {
 
             await saveState;    // wait until state file was saved to disk
 
-            if(outputFileCount) {
+            if(outputFileCount && stateService.isMergeTilesAfterProcessingFinished()) {
                 await mbtileJoinService.joinTiles(stateService.getOutputPath() + "/*_metric.mbtiles","merged_metric.mbtiles",true);
                 await mbtileJoinService.joinTiles(stateService.getOutputPath() + "/*_imperial.mbtiles","merged_imperial.mbtiles",true);
             }
