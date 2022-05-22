@@ -205,7 +205,7 @@ class GenerateVectorContourLinesService {
                                 outputFileCount++;
                             }
 
-                            loggerService.writeLine(`${new Date().toISOString()}: Finished processing '${fileSystemService.extractFileName(demFile)}'. Progress ${count} of ${demFiles?.length} files. Skipped ${skipCount} files. ${emptyCount} files were empty.`);
+                            loggerService.writeLine(`Finished processing '${fileSystemService.extractFileName(demFile)}'. Progress ${count} of ${demFiles?.length} files. Skipped ${skipCount} files. ${emptyCount} files were empty.`);
 
                             processNextDemFile();
                         }).catch(e => {
@@ -223,16 +223,7 @@ class GenerateVectorContourLinesService {
                 };
     
                 activeThreads = demFiles.length > stateService.getThreadsCount() ? stateService.getThreadsCount() : demFiles.length;
-
-                if(stateService.isDebug()) {
-                    loggerService.writeLine()
-                    loggerService.writeLine()
-                    loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                    loggerService.writeLine(`Processing ${jobs.length} DEM files, ${activeThreads} in parallel`);
-                    loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                    loggerService.writeLine()
-                    loggerService.writeLine()
-                }
+                loggerService.writeLine(`Processing ${jobs.length} DEM files, ${activeThreads} in parallel`);
     
                 for(let i=0; i<activeThreads; i++) {
                     processNextDemFile();
