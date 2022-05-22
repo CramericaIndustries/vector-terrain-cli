@@ -42,7 +42,7 @@ class MbtileJoinService {
             const cmd = `tile-join -o ${outputFile} ${fromMbtilesFile}`;
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine(cmd);
+                loggerService.writeLine(cmd);
             }
 
             const exeRes = await commandLineExecutionService.exec(cmd);
@@ -59,15 +59,15 @@ class MbtileJoinService {
             await fileSystemService.removeFileOrDirectory(outputFile + "-journal");
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine()
-                loggerService.wirteLine()
-                loggerService.wirteLine("~~~~~~~ MbtileJoinService.toMbtiles ~~~~~~~");
-                loggerService.wirteLine(`Merged mbtiles: ${fromMbtilesFile} to ${outputFile}`);
+                loggerService.writeLine()
+                loggerService.writeLine()
+                loggerService.writeLine("~~~~~~~ MbtileJoinService.toMbtiles ~~~~~~~");
+                loggerService.writeLine(`Merged mbtiles: ${fromMbtilesFile} to ${outputFile}`);
                 // loggerService.wirteLine(`Settings...  ${zoom} to ${outputFile}`);
-                loggerService.wirteLine(`tile-join output: ${exeRes.output || null}`);
-                loggerService.wirteLine("/~~~~~~ MbtileJoinService.toMbtiles ~~~~~~~");
-                loggerService.wirteLine()
-                loggerService.wirteLine()
+                loggerService.writeLine(`tile-join output: ${exeRes.output || null}`);
+                loggerService.writeLine("/~~~~~~ MbtileJoinService.toMbtiles ~~~~~~~");
+                loggerService.writeLine()
+                loggerService.writeLine()
             }
         }
 

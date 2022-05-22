@@ -76,15 +76,15 @@ class GdalContourService {
             }
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine();
-                loggerService.wirteLine();
-                loggerService.wirteLine("~~~~~~~ GdalContourService.generateContourGeoJson ~~~~~~~");
-                loggerService.wirteJson(`Generating geojson contours for ${vrtFilePath} to ${outputFile}`);
-                loggerService.wirteJson(`Unit: ${imperialUnits ? 'imperial' : 'metric'}, distance between lines: ${distanceBetweenLines}${imperialUnits ? 'ft' : 'm'}`);
+                loggerService.writeLine();
+                loggerService.writeLine();
+                loggerService.writeLine("~~~~~~~ GdalContourService.generateContourGeoJson ~~~~~~~");
+                loggerService.writeJson(`Generating geojson contours for ${vrtFilePath} to ${outputFile}`);
+                loggerService.writeJson(`Unit: ${imperialUnits ? 'imperial' : 'metric'}, distance between lines: ${distanceBetweenLines}${imperialUnits ? 'ft' : 'm'}`);
                 // loggerService.wirteJson(`gdal_contour output: ${exeRes.output || null}`);
-                loggerService.wirteLine("/~~~~~~ GdalContourService.generateContourGeoJson ~~~~~~~");
-                loggerService.wirteLine();
-                loggerService.wirteLine();
+                loggerService.writeLine("/~~~~~~ GdalContourService.generateContourGeoJson ~~~~~~~");
+                loggerService.writeLine();
+                loggerService.writeLine();
             }
         }
 

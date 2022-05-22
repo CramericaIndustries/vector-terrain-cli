@@ -50,7 +50,7 @@ class TippecanoeService {
             `;
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine(cmd);
+                loggerService.writeLine(cmd);
             }
 
             let exeRes: CommandLineExecutionResult = null;
@@ -87,20 +87,20 @@ class TippecanoeService {
                 await fileSystemService.removeFileOrDirectory(outputFile);
                 result = null;
             } else {
-                loggerService.wirteLine(`ERROR tippecanoe: ${exeRes.output}`);
+                loggerService.writeLine(`ERROR tippecanoe: ${exeRes.output}`);
                 throw (exeRes.stderr);
             }
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine();
-                loggerService.wirteLine();
-                loggerService.wirteLine("~~~~~~~ TippecanoeService.toMbtiles ~~~~~~~");
-                loggerService.wirteLine(`Converted ${featureCount} geojson features to mbtiles: ${geoJsonFile} to ${outputFileName}`);
+                loggerService.writeLine();
+                loggerService.writeLine();
+                loggerService.writeLine("~~~~~~~ TippecanoeService.toMbtiles ~~~~~~~");
+                loggerService.writeLine(`Converted ${featureCount} geojson features to mbtiles: ${geoJsonFile} to ${outputFileName}`);
                 // loggerService.wirteLine(`Settings...  ${zoom} to ${outputFile}`);
-                loggerService.wirteLine(`tippecanoe output: ${exeRes.output || null}`);
-                loggerService.wirteLine("/~~~~~~ TippecanoeService.toMbtiles ~~~~~~~");
-                loggerService.wirteLine();
-                loggerService.wirteLine();
+                loggerService.writeLine(`tippecanoe output: ${exeRes.output || null}`);
+                loggerService.writeLine("/~~~~~~ TippecanoeService.toMbtiles ~~~~~~~");
+                loggerService.writeLine();
+                loggerService.writeLine();
             }
         }
 

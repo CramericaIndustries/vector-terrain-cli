@@ -69,15 +69,15 @@ class GdalWarpService {
             }
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine()
-                loggerService.wirteLine()
-                loggerService.wirteLine("~~~~~~~ GdalWarpService.trimVrtFile ~~~~~~~");
-                loggerService.wirteLine(`VRT file: ${outputFile}`);
-                loggerService.wirteLine(cmd);
-                loggerService.wirteLine(`gdalbuildvrt output: ${exeRes.output || null}`);
-                loggerService.wirteLine("/~~~~~~ GdalWarpService.trimVrtFile ~~~~~~~");
-                loggerService.wirteLine()
-                loggerService.wirteLine()
+                loggerService.writeLine()
+                loggerService.writeLine()
+                loggerService.writeLine("~~~~~~~ GdalWarpService.trimVrtFile ~~~~~~~");
+                loggerService.writeLine(`VRT file: ${outputFile}`);
+                loggerService.writeLine(cmd);
+                loggerService.writeLine(`gdalbuildvrt output: ${exeRes.output || null}`);
+                loggerService.writeLine("/~~~~~~ GdalWarpService.trimVrtFile ~~~~~~~");
+                loggerService.writeLine()
+                loggerService.writeLine()
             }
         }
 
@@ -110,14 +110,14 @@ class GdalWarpService {
             }
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine()
-                loggerService.wirteLine()
-                loggerService.wirteLine("~~~~~~~ GdalWarpService.convertToESPG4326 ~~~~~~~");
-                loggerService.wirteLine(`VRT file: ${outputFile}`);
-                loggerService.wirteLine(`gdalbuildvrt output: ${exeRes.output || null}`);
-                loggerService.wirteLine("/~~~~~~ GdalWarpService.convertToESPG4326 ~~~~~~~");
-                loggerService.wirteLine()
-                loggerService.wirteLine()
+                loggerService.writeLine()
+                loggerService.writeLine()
+                loggerService.writeLine("~~~~~~~ GdalWarpService.convertToESPG4326 ~~~~~~~");
+                loggerService.writeLine(`VRT file: ${outputFile}`);
+                loggerService.writeLine(`gdalbuildvrt output: ${exeRes.output || null}`);
+                loggerService.writeLine("/~~~~~~ GdalWarpService.convertToESPG4326 ~~~~~~~");
+                loggerService.writeLine()
+                loggerService.writeLine()
             }
         }
 

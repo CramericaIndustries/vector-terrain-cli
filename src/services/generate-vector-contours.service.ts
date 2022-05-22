@@ -64,13 +64,13 @@ class GenerateVectorContourLinesService {
 
             if(await stateService.isFileAlreadyProcessed(demFile)) {
                 if(stateService.isDebug()) {
-                    loggerService.wirteLine()
-                    loggerService.wirteLine()
-                    loggerService.wirteLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                    loggerService.wirteLine(`Skipping already processed file ${demFile}`);
-                    loggerService.wirteLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                    loggerService.wirteLine()
-                    loggerService.wirteLine()
+                    loggerService.writeLine()
+                    loggerService.writeLine()
+                    loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                    loggerService.writeLine(`Skipping already processed file ${demFile}`);
+                    loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                    loggerService.writeLine()
+                    loggerService.writeLine()
                 }
 
                 result.skipped = true;
@@ -82,13 +82,13 @@ class GenerateVectorContourLinesService {
                 if(epsgId) {
 
                     if(stateService.isDebug()) {
-                        loggerService.wirteLine()
-                        loggerService.wirteLine()
-                        loggerService.wirteLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                        loggerService.wirteLine(`EPSG ${epsgId} => ${demFile}`);
-                        loggerService.wirteLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                        loggerService.wirteLine()
-                        loggerService.wirteLine()
+                        loggerService.writeLine()
+                        loggerService.writeLine()
+                        loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                        loggerService.writeLine(`EPSG ${epsgId} => ${demFile}`);
+                        loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                        loggerService.writeLine()
+                        loggerService.writeLine()
                     }
 
                     const sourceDemFileName = fileSystemService.extractFileName(demFile);
@@ -128,9 +128,9 @@ class GenerateVectorContourLinesService {
                     
                     if(result.empty) {
                         result.empty = true;
-                        loggerService.wirteLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                        loggerService.wirteLine(`No contours (flat area) in ${demFile}`);
-                        loggerService.wirteLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                        loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                        loggerService.writeLine(`No contours (flat area) in ${demFile}`);
+                        loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
                     }
 
 
@@ -147,13 +147,13 @@ class GenerateVectorContourLinesService {
                     result.duration = result.endTime - result.startTime;
 
                     if(stateService.isDebug()) {
-                        loggerService.wirteLine()
-                        loggerService.wirteLine()
-                        loggerService.wirteLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                        loggerService.wirteLine(`Cleaning up temporary files of ${demFile}`);
-                        loggerService.wirteLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                        loggerService.wirteLine()
-                        loggerService.wirteLine()
+                        loggerService.writeLine()
+                        loggerService.writeLine()
+                        loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                        loggerService.writeLine(`Cleaning up temporary files of ${demFile}`);
+                        loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                        loggerService.writeLine()
+                        loggerService.writeLine()
                     }
                 } else {
                     result.error = true;
@@ -205,7 +205,7 @@ class GenerateVectorContourLinesService {
                                 outputFileCount++;
                             }
 
-                            loggerService.wirteLine(`${new Date().toISOString()}: Finished processing '${fileSystemService.extractFileName(demFile)}'. Progress ${count} of ${demFiles?.length} files. Skipped ${skipCount} files. ${emptyCount} files were empty.`);
+                            loggerService.writeLine(`${new Date().toISOString()}: Finished processing '${fileSystemService.extractFileName(demFile)}'. Progress ${count} of ${demFiles?.length} files. Skipped ${skipCount} files. ${emptyCount} files were empty.`);
 
                             processNextDemFile();
                         }).catch(e => {
@@ -225,13 +225,13 @@ class GenerateVectorContourLinesService {
                 activeThreads = demFiles.length > stateService.getThreadsCount() ? stateService.getThreadsCount() : demFiles.length;
 
                 if(stateService.isDebug()) {
-                    loggerService.wirteLine()
-                    loggerService.wirteLine()
-                    loggerService.wirteLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                    loggerService.wirteLine(`Processing ${jobs.length} DEM files, ${activeThreads} in parallel`);
-                    loggerService.wirteLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                    loggerService.wirteLine()
-                    loggerService.wirteLine()
+                    loggerService.writeLine()
+                    loggerService.writeLine()
+                    loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                    loggerService.writeLine(`Processing ${jobs.length} DEM files, ${activeThreads} in parallel`);
+                    loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                    loggerService.writeLine()
+                    loggerService.writeLine()
                 }
     
                 for(let i=0; i<activeThreads; i++) {
@@ -250,14 +250,14 @@ class GenerateVectorContourLinesService {
             const totalDuration = Date.now() - startTime;
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine()
-                loggerService.wirteLine()
-                loggerService.wirteLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                loggerService.wirteLine(`Processed ${count - skipCount - emptyCount} of ${count} DEM files in ${timeFormatService.toDurationString(totalDuration)}`);
-                loggerService.wirteLine(`${emptyCount} files were empty. Skipped ${skipCount} files because they were already processed in a previous run.`);
-                loggerService.wirteLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                loggerService.wirteLine()
-                loggerService.wirteLine()
+                loggerService.writeLine()
+                loggerService.writeLine()
+                loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                loggerService.writeLine(`Processed ${count - skipCount - emptyCount} of ${count} DEM files in ${timeFormatService.toDurationString(totalDuration)}`);
+                loggerService.writeLine(`${emptyCount} files were empty. Skipped ${skipCount} files because they were already processed in a previous run.`);
+                loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
+                loggerService.writeLine()
+                loggerService.writeLine()
             }
 
         }
@@ -285,16 +285,16 @@ class GenerateVectorContourLinesService {
                result = result && installed;
            });
         } catch(e) {
-            loggerService.wirteLine(`${e}`);
+            loggerService.writeLine(`${e}`);
         }
 
         if(stateService.isDebug()) {
             // do something
-            loggerService.wirteLine();
-            loggerService.wirteLine("~~~~~~~~ PrerequisitesService ~~~~~~~~");
-            loggerService.wirteLine(`testPrerequisitesInstalled => ${result ? "OKAY" : "FAILED"}`);
-            loggerService.wirteLine("/~~~~~~~ PrerequisitesService ~~~~~~~~");
-            loggerService.wirteLine();
+            loggerService.writeLine();
+            loggerService.writeLine("~~~~~~~~ PrerequisitesService ~~~~~~~~");
+            loggerService.writeLine(`testPrerequisitesInstalled => ${result ? "OKAY" : "FAILED"}`);
+            loggerService.writeLine("/~~~~~~~ PrerequisitesService ~~~~~~~~");
+            loggerService.writeLine();
         }
 
         return result;

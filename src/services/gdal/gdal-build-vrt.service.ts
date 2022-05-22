@@ -48,15 +48,15 @@ class GdalBuildVrtService {
             }
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine()
-                loggerService.wirteLine()
-                loggerService.wirteLine("~~~~~~~ GdalBuildVrtService.buildVrtFile ~~~~~~~");
-                loggerService.wirteLine(`VRT file: ${outputFilePath}`);
-                loggerService.wirteLine(`command: ${cmd}`);
-                loggerService.wirteLine(`gdalbuildvrt output: ${exeRes.output || null}`);
-                loggerService.wirteLine("/~~~~~~ GdalBuildVrtService.buildVrtFile ~~~~~~~");
-                loggerService.wirteLine()
-                loggerService.wirteLine()
+                loggerService.writeLine()
+                loggerService.writeLine()
+                loggerService.writeLine("~~~~~~~ GdalBuildVrtService.buildVrtFile ~~~~~~~");
+                loggerService.writeLine(`VRT file: ${outputFilePath}`);
+                loggerService.writeLine(`command: ${cmd}`);
+                loggerService.writeLine(`gdalbuildvrt output: ${exeRes.output || null}`);
+                loggerService.writeLine("/~~~~~~ GdalBuildVrtService.buildVrtFile ~~~~~~~");
+                loggerService.writeLine()
+                loggerService.writeLine()
             }
         }
 

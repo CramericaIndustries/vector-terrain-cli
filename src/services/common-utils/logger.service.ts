@@ -1,5 +1,5 @@
 class LoggerService {
-    public wirteLine(text: string = null): LoggerService {
+    public writeLine(text: string = null): LoggerService {
 
         if(text) {
             process.stdout.write(`${text}\n`);
@@ -11,11 +11,11 @@ class LoggerService {
     }
 
     public errorLine(text: string = null,clazz: string = null): LoggerService {
-        return this.wirteLine(`ERROR ${clazz}: ${text}`);
+        return this.writeLine(`ERROR ${clazz}: ${text}`);
     }
     
     
-    public wirteJson(obj: {}, pretty = true): LoggerService {
+    public writeJson(obj: {}, pretty = true): LoggerService {
 
         if(obj) {
             if(pretty) {
@@ -28,7 +28,7 @@ class LoggerService {
         return this;
     }
 
-    public wirte(text: string): LoggerService {
+    public write(text: string): LoggerService {
         if(text) {
             process.stdout.write(text);
         }

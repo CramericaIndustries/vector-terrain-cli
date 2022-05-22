@@ -57,14 +57,14 @@ class GdalTranslateService {
             }
 
             if(stateService.isDebug()) {
-                loggerService.wirteLine()
-                loggerService.wirteLine()
-                loggerService.wirteLine("~~~~~~~ GdalTranslateService.convertVrtWgs84ToImperialUnits ~~~~~~~");
-                loggerService.wirteLine(`Converted VRT file: '${vrtFilePath}' to imperial units `);
-                loggerService.wirteLine(`gdal_translate output: ${exeRes.output || null}`);
-                loggerService.wirteLine("/~~~~~~ GdalTranslateService.convertVrtWgs84ToImperialUnits ~~~~~~~");
-                loggerService.wirteLine()
-                loggerService.wirteLine()
+                loggerService.writeLine()
+                loggerService.writeLine()
+                loggerService.writeLine("~~~~~~~ GdalTranslateService.convertVrtWgs84ToImperialUnits ~~~~~~~");
+                loggerService.writeLine(`Converted VRT file: '${vrtFilePath}' to imperial units `);
+                loggerService.writeLine(`gdal_translate output: ${exeRes.output || null}`);
+                loggerService.writeLine("/~~~~~~ GdalTranslateService.convertVrtWgs84ToImperialUnits ~~~~~~~");
+                loggerService.writeLine()
+                loggerService.writeLine()
             }
 
         }

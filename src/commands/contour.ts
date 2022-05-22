@@ -47,13 +47,13 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     await stateService.prepare(opts.outputDirectory,opts.startover);
 
     if(stateService.isDebug()) {
-        loggerService.wirteLine();
-        loggerService.wirteLine();
-        loggerService.wirteLine("~~~~~~~~yargs.argv~~~~~~~~~");
-        loggerService.wirteLine(`${JSON.stringify(argv,null,3)}`);
-        loggerService.wirteLine("/~~~~~~~yargs.argv~~~~~~~~~");
-        loggerService.wirteLine();
-        loggerService.wirteLine();
+        loggerService.writeLine();
+        loggerService.writeLine();
+        loggerService.writeLine("~~~~~~~~yargs.argv~~~~~~~~~");
+        loggerService.writeLine(`${JSON.stringify(argv,null,3)}`);
+        loggerService.writeLine("/~~~~~~~yargs.argv~~~~~~~~~");
+        loggerService.writeLine();
+        loggerService.writeLine();
     }
 
 
