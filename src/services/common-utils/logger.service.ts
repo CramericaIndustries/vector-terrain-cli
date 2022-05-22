@@ -2,7 +2,7 @@ class LoggerService {
     public writeLine(text: string = null): LoggerService {
 
         if(text) {
-            process.stdout.write(`${text}\n`);
+            process.stdout.write(`${new Date().toISOString()}: ${text}\n`);
         } else {
             process.stdout.write("\n");
         }
