@@ -240,16 +240,12 @@ class GenerateVectorContourLinesService {
             await tippecanoeService.cleanUp();
             const totalDuration = Date.now() - startTime;
 
-            if(stateService.isDebug()) {
-                loggerService.writeLine()
-                loggerService.writeLine()
-                loggerService.writeLine("~~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                loggerService.writeLine(`Processed ${count - skipCount - emptyCount} of ${count} DEM files in ${timeFormatService.toDurationString(totalDuration)}`);
-                loggerService.writeLine(`${emptyCount} files were empty. Skipped ${skipCount} files because they were already processed in a previous run.`);
-                loggerService.writeLine("/~~~~~~ GenerateVectorContourLinesService.generateContourLines ~~~~~~~");
-                loggerService.writeLine()
-                loggerService.writeLine()
-            }
+            loggerService.writeLine()
+            loggerService.writeLine()
+            loggerService.writeLine(`Processed ${count - skipCount - emptyCount} of ${count} DEM files in ${timeFormatService.toDurationString(totalDuration)}`);
+            loggerService.writeLine(`${emptyCount} files were empty. Skipped ${skipCount} files because they were already processed in a previous run.`);
+            loggerService.writeLine()
+            loggerService.writeLine()
 
         }
         return false;
