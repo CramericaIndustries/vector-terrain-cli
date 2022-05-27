@@ -29,3 +29,18 @@ npm run build
 ## Notes
 1) use the `--threads x` command line argument to determine how many dem files will be processed in parallel
 2) if the execution was interrupted, after restart the cli won't process already processed files
+
+## Troubleshooting
+### tile-join: "unable to open database file"
+If tile-join fails after a while with the following error message: "unable to open database file"...   
+It probably is because you are trying to merge more files than the system can open at the same time.   
+Check `ulimit -n` to see how many files your system allows you to open in parallel.
+   
+You can increase the limit by first editing `vim /etc/security/limits.conf` 
+```
+#<domain>      <type>  <item>         <value>
+*             hard      nofile           100000
+```
+This will allow to increase the limit to 100.000 files. After that you can set the limit by again using ulimit: `ulimit -n 100000`.
+
+@see https://github.com/mapbox/tilelive/issues/90#issuecomment-58552445
